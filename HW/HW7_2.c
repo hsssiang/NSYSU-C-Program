@@ -1,0 +1,160 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main (){
+	int input_repeat, i;
+	char input_index[256][256], input_number[256][256];
+	FILE *output = fopen( "./output.txt" , "w" );									//??????output.txt ???���???蝞�蟡�??鈭方�����?
+	scanf ( "%d" , &input_repeat );
+	printf ( "\n" );
+	for ( i = 0 ; i < input_repeat ; i ++ ){
+		fflush (stdin);																//���?���蝞�??���?���閰�?鈭�??
+		scanf ( "%[^\n]" , input_index[i] );										//���???鈭交��??蝎�??���?
+		fflush (stdin);																//���?���蝞�??���?���閰�?鈭�??
+		scanf ( "%[^\n]" , input_number[i] );										//���???鈭交��??蝞�??
+	}
+	for ( i = 0 ; i < input_repeat ; i ++ ){
+		int k, q, j = 0, max = 0; 
+		int counter_char = 0, counter_temp = 0; 
+		int swi = 1, repeat = 1, pow = 1;
+		int digital_index[256] = {0}, temp[2] = {0};
+		char number[256][256], index[256][256];
+		for ( k = 0 ; k <= strlen( input_index[i] ) ; k ++ ){
+			if ( input_index[i][k] == ' ' ){										//??���?���敺�???
+				temp[counter_temp] = k;												//??���?????���?���蝞�?瞏�??���?
+				counter_temp ++;													//���?���?���������???���蝞�??
+			}
+			if ( swi == 1 ){
+				while ( input_index[i][j] != ' ' ){									//??���?���??���閰�?銋�????????���?
+					if ( j == strlen (input_index[i]) ) break;						//??���?���甇�??蝞�???????????���?
+					index[repeat][counter_char] = input_index[i][j];				//??????���????���������?????瞉�??������??
+					counter_char ++;
+					j ++;
+				}
+				index[repeat][j] = '\0';											//??���??������??������??���?'\0'���???���??��輯撒?蝛鈣rlen
+				swi = 0;															//���鞈�??
+				counter_char = 0;
+			}
+			else if ( counter_temp == 1 && k == strlen (input_index[i]) ){			//���閰�?蝞�?????���銋�????????���????���?���????������????????���???????
+				repeat ++;
+				for ( j = temp[0] + 1 ; j < strlen (input_index[i]) ; j ++ ){
+					index[repeat][counter_char] = input_index[i][j] ;				//??????���????���������?????瞉�??������??
+					counter_char ++;
+				}
+				index[repeat][counter_char] = '\0';									//??���??������??������??���?'\0'���???���??��輯撒?蝛鈣rlen
+				swi = 0;															//���鞈�??
+				counter_char = 0;
+			}
+			else if ( counter_temp == 2 ){											//���閰�?蝞�?????���銋�????????���????���?���????������??���?���???????���???????
+				repeat ++;
+				for ( j = temp[0] + 1 ; j < temp[1] ; j ++ ){						
+					index[repeat][counter_char] = input_index[i][j] ;				//??????���????���������?????瞉�??������??
+					counter_char ++;
+				}
+				index[repeat][counter_char] = '\0';									//??���??������??������??���?'\0'���???���??��輯撒?蝛鈣rlen
+				counter_char = 0;													//���鞈�??
+				temp[0] = temp[1];
+				counter_temp = 1;
+			}
+		}
+		for ( k = 1 ; k <= repeat ; k ++ ){
+			for ( j = strlen(index[k]) - 1 ; j >= 0 ; j -- ){
+				switch (index[k][j]){												//���????���?���????int??????���???憳���園�輯撒??
+					case '1':														
+						digital_index[k] += 1*pow;
+						break;
+					case '2':
+						digital_index[k] += 2*pow;
+						break;
+					case '3':
+						digital_index[k] += 3*pow;
+						break;
+					case '4':
+						digital_index[k] += 4*pow;
+						break;
+					case '5':
+						digital_index[k] += 5*pow;
+						break;
+					case '6':
+						digital_index[k] += 6*pow;
+						break;
+					case '7':
+						digital_index[k] += 7*pow;
+						break;
+					case '8':
+						digital_index[k] += 8*pow;
+						break;
+					case '9':
+						digital_index[k] += 9*pow;
+						break;
+				}
+				pow *= 10;															//���?���?10???������?撖�??
+			}
+			pow = 1;
+			if ( digital_index[k] > max ){
+				max = digital_index[k];												//??���?���??������????閰�??
+			}
+		}
+		repeat = 1;																	//���鞈�??
+		swi = 1;
+		counter_temp = 0;
+		temp[0] = 0;
+		temp[1] = 0;
+		j = 0;
+		for ( k = 0 ; k <= strlen (input_number[i]) ; k ++ ){
+			if ( input_number[i][k] == ' ' ){										//??���?���敺�???
+				temp[counter_temp] = k;												//??���?????���?���蝞�?瞏�??���?
+				counter_temp ++;													//���?���?���������???���蝞�??
+			}
+			if ( swi == 1 ){														
+				while ( input_number[i][j] != ' ' ){								//??���?���??���閰�?銋�???????閰�??
+					if ( j == strlen (input_number[i]) ) break;						//??���?���甇�??蝞�???????????���?
+					number[repeat][counter_char] = input_number[i][j];				//?????閰�?????���������?????瞉�??������??
+					counter_char ++;
+					j ++;
+				}
+				number[repeat][j] = '\0';											//??���??������??������??���?'\0'���???���??��輯撒?蝛鈣rlen
+				swi = 0;															//���鞈�??
+				counter_char = 0;					
+			}
+			else if ( counter_temp == 1 && k == strlen (input_number[i]) ){			//���閰�?蝞�?????���銋�???????閰�?????���?���????������???????閰�????????
+				repeat ++;
+				for ( j = temp[0] + 1 ; j < strlen (input_number[i]) ; j ++ ){		
+					number[repeat][counter_char] = input_number[i][j] ;				//?????閰�?????���������?????瞉�??������??
+					counter_char ++;
+				}
+				number[repeat][counter_char] = '\0';								//??���??������??������??���?'\0'���???���??��輯撒?蝛鈣rlen
+				swi = 0;															//���鞈�??
+				counter_char = 0;
+			}
+			else if ( counter_temp == 2 ){											//���閰�?蝞�?????���銋�???????閰�?????���?���????������??���?���??????閰�????????
+				repeat ++;
+				for ( j = temp[0] + 1 ; j < temp[1] ; j ++ ){
+					number[repeat][counter_char] = input_number[i][j] ;				//?????閰�?????���������?????瞉�??������??
+					counter_char ++;
+				}
+				number[repeat][counter_char] = '\0';								//??���??������??������??���?'\0'���???���??��輯撒?蝛鈣rlen
+				counter_char = 0;													//���鞈�??
+				temp[0] = temp[1];
+				counter_temp = 1;
+			}
+		}
+		for ( k = 1 ; k <= max ; k ++ ){
+			for ( j = 1 ; j <= max ; j ++ ){
+				if ( k == digital_index[j] ){
+					for ( q = 0 ; q < strlen(number[j]) ; q ++ ){
+						printf ( "%c" , number[j][q] );								//���??????���?���?嚗�??���?
+						fprintf ( output, "%c" , number[j][q] );					//���????���閰�?蝞�?���??���?���?
+					}
+					printf ( "\n" );
+					fprintf (  output,"\n" );
+				}
+			}
+		}
+	}
+	printf ( "\n" );
+	fclose ( output );																//??????���?���?
+	return 0;
+}
+
